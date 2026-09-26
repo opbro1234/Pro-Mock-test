@@ -15,7 +15,6 @@ import {
   Flame, 
   ChevronRight, 
   FileText, 
-  Users, 
   Zap,
   HelpCircle,
   Building2
@@ -173,9 +172,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     Autonomous 2026-27
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate max-w-[280px] sm:max-w-md">
-                  Nirmala Memorial Foundation College of Commerce and Science (Autonomous)
-                </p>
               </div>
             </div>
 
@@ -463,60 +459,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               >
                 Sign In to Start Full Mock
               </button>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* Academic Project Credits & Institutional Authority */}
-      <section className="py-16 bg-white dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-800 transition-colors duration-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="p-8 sm:p-10 rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-6">
-            
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
-              <div>
-                <span className="text-[11px] font-black text-amber-700 dark:text-amber-400 uppercase tracking-widest">
-                  Academic Project Specifications
-                </span>
-                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white font-serif mt-1">
-                  Nirmala Memorial Foundation College of Commerce and Science (Autonomous)
-                </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-400">
-                  Affiliated to University of Mumbai • Department of Information Technology • Academic Year 2026-27
-                </p>
-              </div>
-
-              <div className="px-3.5 py-1.5 rounded-xl bg-amber-100 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800/80 text-amber-900 dark:text-amber-300 text-xs font-bold self-start md:self-auto">
-                Autonomous IT Portal
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-              <div className="p-5 rounded-2xl bg-white dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 shadow-xs space-y-2">
-                <div className="text-xs font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                  <span>Faculty Guidance</span>
-                </div>
-                <h4 className="font-bold text-sm text-slate-900 dark:text-white font-serif">Prof. Shraddha Parab</h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400">
-                  Project Guide & Faculty Supervisor, Department of Information Technology.
-                </p>
-              </div>
-
-              <div className="p-5 rounded-2xl bg-white dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 shadow-xs space-y-2">
-                <div className="text-xs font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1.5">
-                  <Users className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                  <span>Student Developers</span>
-                </div>
-                <h4 className="font-bold text-sm text-slate-900 dark:text-white font-serif">
-                  Shivraj Gond (Roll #29) & Chris Anthony (Roll #09)
-                </h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400">
-                  Third Year B.Sc. Information Technology (TYBSc-IT).
-                </p>
-              </div>
             </div>
 
           </div>
