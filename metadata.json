@@ -1,0 +1,6 @@
+{
+  "name": "Competitive Exam and Current Affairs Mock Test Portal",
+  "description": "A centralized preparation platform for UPSC, SSC, Banking, Railways, and government recruitment exams featuring daily current affairs, subject-wise mock tests, automated scoring, category cutoffs, and performance analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
