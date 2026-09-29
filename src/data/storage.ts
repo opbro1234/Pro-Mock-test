@@ -38,10 +38,18 @@ export const getUserProfile = (): UserProfile => {
       return DEFAULT_USER_PROFILE;
     }
     const parsed: UserProfile = JSON.parse(data);
+    let modified = false;
+    if (parsed.avatar && parsed.avatar.includes('images.unsplash.com')) {
+      parsed.avatar = '';
+      modified = true;
+    }
     if (parsed.role === 'admin' && (parsed.name?.includes('Shraddha') || parsed.name?.includes('Prof.'))) {
       parsed.name = 'Admin';
       parsed.email = 'admin@nirmala.edu.in';
-      parsed.avatar = ADMIN_USER_PROFILE.avatar;
+      parsed.avatar = '';
+      modified = true;
+    }
+    if (modified) {
       localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(parsed));
     }
     return parsed;

@@ -20,19 +20,16 @@ export const Avatar: React.FC<AvatarProps> = ({
 }) => {
   const [hasError, setHasError] = useState(false);
 
-  // Derive initials from name (e.g. "Prof. Shraddha Parab" -> "SP" or "Shivraj Gond" -> "SG")
-  const getInitials = (fullName: string) => {
-    if (!fullName) return 'U';
-    const clean = fullName.replace(/^(Prof\.|Dr\.|Mr\.|Ms\.|Mrs\.)\s+/i, '').trim();
-    const parts = clean.split(' ').filter(Boolean);
-    if (parts.length >= 2) {
-      return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-    }
-    return (parts[0]?.[0] || 'U').toUpperCase();
-  };
-
-  const initials = getInitials(name);
   const isAdmin = role === 'admin' || name.toLowerCase().includes('prof') || name.toLowerCase().includes('admin');
+
+  // Only render an image if it's explicitly uploaded or provided by the user (data URL or blob)
+  // Stock photos of people from Unsplash or external portrait directories are excluded
+  const isUserProvidedPhoto = Boolean(
+    src &&
+    !hasError &&
+    !src.includes('images.unsplash.com') &&
+    (src.startsWith('data:image') || src.startsWith('blob:') || src.startsWith('/uploads/'))
+  );
 
   // Size mapping
   const sizeClasses = {
@@ -43,12 +40,20 @@ export const Avatar: React.FC<AvatarProps> = ({
     xl: 'w-20 h-20 sm:w-24 sm:h-24 text-xl sm:text-2xl'
   };
 
+  const iconSizes = {
+    xs: 'w-3.5 h-3.5',
+    sm: 'w-4 h-4',
+    md: 'w-5 h-5',
+    lg: 'w-6 h-6',
+    xl: 'w-10 h-10 sm:w-12 sm:h-12'
+  };
+
   const borderClass = showBorder 
     ? (isAdmin ? 'border-2 border-amber-500 shadow-sm' : 'border border-slate-300 dark:border-slate-700 shadow-xs')
     : '';
 
-  // If there's an image and no load error occurred
-  if (src && !hasError) {
+  // If there's an actual user-uploaded image
+  if (isUserProvidedPhoto) {
     return (
       <div className={`relative shrink-0 overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800 ${sizeClasses[size]} ${borderClass} ${className}`}>
         <img
@@ -62,23 +67,23 @@ export const Avatar: React.FC<AvatarProps> = ({
     );
   }
 
-  // Fallback Initials / Icon badge
+  // Clean People Symbol / Icon badge
   return (
     <div
-      className={`relative shrink-0 flex items-center justify-center font-bold font-serif rounded-2xl select-none transition-all ${
+      className={`relative shrink-0 flex items-center justify-center rounded-2xl select-none transition-all ${
         isAdmin 
           ? 'bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 text-slate-950 shadow-sm shadow-amber-500/20' 
           : 'bg-amber-100 dark:bg-amber-950/70 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700/60'
       } ${sizeClasses[size]} ${borderClass} ${className}`}
       title={name}
+      aria-label={name}
     >
-      {initials ? (
-        <span>{initials}</span>
-      ) : isAdmin ? (
-        <ShieldCheck className="w-1/2 h-1/2" />
+      {isAdmin ? (
+        <ShieldCheck className={iconSizes[size]} strokeWidth={2.2} />
       ) : (
-        <User className="w-1/2 h-1/2" />
+        <User className={iconSizes[size]} strokeWidth={2.2} />
       )}
     </div>
   );
 };
+

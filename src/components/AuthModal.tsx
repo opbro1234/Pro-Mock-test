@@ -183,7 +183,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 >
                   <div className="flex items-center space-x-3">
                     <Avatar
-                      src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
                       name="Shivraj Gond"
                       size="md"
                     />
@@ -208,7 +207,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 >
                   <div className="flex items-center space-x-3">
                     <Avatar
-                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80"
                       name="Chris Anthony"
                       size="md"
                     />
@@ -234,7 +232,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               >
                 <div className="flex items-center space-x-3">
                   <Avatar
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80"
                     name="Admin"
                     role="admin"
                     size="md"

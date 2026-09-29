@@ -10,7 +10,7 @@ export const DEFAULT_USER_PROFILE: UserProfile = {
   email: 'shivraj.gond@nirmala.edu.in',
   institute: 'Nirmala Memorial Foundation College of Commerce and Science (Autonomous)',
   targetExam: 'UPSC Civil Services',
-  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+  avatar: '',
   role: 'student',
   streakDays: 8,
   lastActiveDate: '2026-08-30'
@@ -25,7 +25,7 @@ export const SECONDARY_STUDENT_PROFILE: UserProfile = {
   email: 'chris.anthony@nirmala.edu.in',
   institute: 'Nirmala Memorial Foundation College of Commerce and Science (Autonomous)',
   targetExam: 'SSC (CGL/CHSL/MTS)',
-  avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+  avatar: '',
   role: 'student',
   streakDays: 12,
   lastActiveDate: '2026-08-30'
@@ -40,7 +40,7 @@ export const ADMIN_USER_PROFILE: UserProfile = {
   email: 'admin@nirmala.edu.in',
   institute: 'Nirmala Memorial Foundation College of Commerce and Science (Autonomous)',
   targetExam: 'UPSC Civil Services',
-  avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80',
+  avatar: '',
   role: 'admin',
   streakDays: 30,
   lastActiveDate: '2026-08-31'
