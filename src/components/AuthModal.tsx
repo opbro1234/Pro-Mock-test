@@ -234,18 +234,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               >
                 <div className="flex items-center space-x-3">
                   <Avatar
-                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80"
-                    name="Prof. Shraddha Parab"
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80"
+                    name="Admin"
                     role="admin"
                     size="md"
                   />
                   <div>
-                    <h4 className="font-bold text-sm text-slate-900 dark:text-white">Prof. Shraddha Parab</h4>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Project Guide • Admin Module</p>
+                    <h4 className="font-bold text-sm text-slate-900 dark:text-white">Admin</h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">Portal Administrator • Admin Module</p>
                   </div>
                 </div>
                 <span className="px-2.5 py-1 bg-amber-500 text-slate-950 text-[10px] font-extrabold uppercase rounded-lg">
-                  Faculty Mode
+                  Admin Mode
                 </span>
               </div>
             </div>

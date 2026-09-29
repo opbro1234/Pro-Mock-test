@@ -198,31 +198,51 @@ export const App: React.FC = () => {
         )}
 
         {activeTab === 'analytics' && (
-          activeAttemptResult ? (
+          (activeAttemptResult || attempts[0]) ? (
             <ResultsAnalyticsView
-              attempt={activeAttemptResult}
+              attempt={activeAttemptResult || attempts[0]}
               testQuestions={
-                mockTests.find(t => t.id === activeAttemptResult.testId)?.questions ||
-                questions.slice(0, activeAttemptResult.totalQuestions)
+                mockTests.find(t => t.id === (activeAttemptResult || attempts[0]).testId)?.questions ||
+                questions.slice(0, (activeAttemptResult || attempts[0]).totalQuestions)
               }
               user={user}
+              allAttempts={attempts}
+              allMockTests={mockTests}
+              allQuestions={questions}
+              onSelectAttempt={(att) => setActiveAttemptResult(att)}
+              onAddResult={(newAtt) => {
+                saveTestAttempt(newAtt);
+                reloadData();
+                setActiveAttemptResult(newAtt);
+              }}
               onRetakeTest={handleRetakeCurrentTest}
               onBackToPortal={() => setActiveTab('mock')}
-              onOpenScorecardPrint={() => setPrintableScorecardAttempt(activeAttemptResult)}
+              onOpenScorecardPrint={() => setPrintableScorecardAttempt(activeAttemptResult || attempts[0])}
             />
           ) : (
             <div className="max-w-4xl mx-auto py-16 px-4 text-center space-y-4">
-              <div className="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+              <div className="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
                 <h3 className="text-xl font-bold font-serif text-slate-900 dark:text-white">No Mock Tests Completed Yet</h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto">
-                  Complete your first timed mock test to generate comprehensive performance diagnostics and category cutoff analytics.
+                  Complete your first timed mock test or add an exam result to generate comprehensive performance diagnostics and category cutoff analytics.
                 </p>
-                <button
-                  onClick={() => setActiveTab('mock')}
-                  className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl shadow-sm transition-colors cursor-pointer"
-                >
-                  Go to Mock Test Portal
-                </button>
+                <div className="flex items-center justify-center gap-3">
+                  <button
+                    onClick={() => setActiveTab('mock')}
+                    className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl shadow-sm transition-colors cursor-pointer"
+                  >
+                    Go to Mock Test Portal
+                  </button>
+                  <button
+                    onClick={() => {
+                      reloadData();
+                      if (attempts.length > 0) setActiveAttemptResult(attempts[0]);
+                    }}
+                    className="px-5 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs rounded-xl shadow-sm transition-colors cursor-pointer"
+                  >
+                    Load Sample Results
+                  </button>
+                </div>
               </div>
             </div>
           )

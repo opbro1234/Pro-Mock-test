@@ -13,7 +13,8 @@ import {
   SEED_CURRENT_AFFAIRS, 
   DEFAULT_USER_PROFILE,
   SECONDARY_STUDENT_PROFILE,
-  ADMIN_USER_PROFILE
+  ADMIN_USER_PROFILE,
+  SEED_TEST_ATTEMPTS
 } from './seedData';
 
 const STORAGE_KEYS = {
@@ -36,7 +37,14 @@ export const getUserProfile = (): UserProfile => {
       localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(DEFAULT_USER_PROFILE));
       return DEFAULT_USER_PROFILE;
     }
-    return JSON.parse(data);
+    const parsed: UserProfile = JSON.parse(data);
+    if (parsed.role === 'admin' && (parsed.name?.includes('Shraddha') || parsed.name?.includes('Prof.'))) {
+      parsed.name = 'Admin';
+      parsed.email = 'admin@nirmala.edu.in';
+      parsed.avatar = ADMIN_USER_PROFILE.avatar;
+      localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(parsed));
+    }
+    return parsed;
   } catch (e) {
     return DEFAULT_USER_PROFILE;
   }
@@ -222,11 +230,19 @@ export const deleteMockTest = (id: string): void => {
 export const getTestAttempts = (): TestAttempt[] => {
   try {
     const data = localStorage.getItem(STORAGE_KEYS.ATTEMPTS);
-    if (!data) return [];
-    return JSON.parse(data);
+    if (!data) {
+      localStorage.setItem(STORAGE_KEYS.ATTEMPTS, JSON.stringify(SEED_TEST_ATTEMPTS));
+      return SEED_TEST_ATTEMPTS;
+    }
+    const parsed = JSON.parse(data);
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      localStorage.setItem(STORAGE_KEYS.ATTEMPTS, JSON.stringify(SEED_TEST_ATTEMPTS));
+      return SEED_TEST_ATTEMPTS;
+    }
+    return parsed;
   } catch (e) {
     console.error('Error reading attempts from localStorage', e);
-    return [];
+    return SEED_TEST_ATTEMPTS;
   }
 };
 

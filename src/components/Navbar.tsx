@@ -154,7 +154,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 showBorder={false}
               />
               <span className="text-xs font-bold max-w-[110px] truncate">
-                {user.name.startsWith('Prof.') ? 'Prof. Shraddha' : user.name.split(' ')[0]}
+                {user.role === 'admin' ? 'Admin' : user.name.split(' ')[0]}
               </span>
             </button>
 

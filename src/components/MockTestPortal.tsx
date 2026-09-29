@@ -180,27 +180,6 @@ export const MockTestPortal: React.FC<MockTestPortalProps> = ({
                   <span className="text-xs font-bold font-mono text-rose-600 dark:text-rose-400">-{test.negativeMarksPerQuestion} Mark</span>
                 </div>
               </div>
-
-              {/* Cutoff Reference Pills */}
-              <div className="space-y-1.5 text-xs">
-                <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
-                  Category Cutoffs Benchmark:
-                </span>
-                <div className="flex flex-wrap gap-1.5 font-mono text-[11px]">
-                  <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-amber-800 dark:text-amber-300 border border-slate-200 dark:border-slate-700">
-                    UR: {test.categoryCutoffs?.UR || test.overallCutoffMarks}
-                  </span>
-                  <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-cyan-800 dark:text-cyan-300 border border-slate-200 dark:border-slate-700">
-                    OBC: {test.categoryCutoffs?.OBC || 9}
-                  </span>
-                  <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-purple-800 dark:text-purple-300 border border-slate-200 dark:border-slate-700">
-                    EWS: {test.categoryCutoffs?.EWS || 8.5}
-                  </span>
-                  <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-emerald-800 dark:text-emerald-300 border border-slate-200 dark:border-slate-700">
-                    SC/ST: {test.categoryCutoffs?.SC || 7}
-                  </span>
-                </div>
-              </div>
             </div>
 
             {/* Start Button */}
@@ -320,31 +299,6 @@ export const MockTestPortal: React.FC<MockTestPortalProps> = ({
                 </ul>
               </div>
 
-              {/* Candidate Category Selection */}
-              <div className="space-y-2 p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60">
-                <label className="font-bold text-amber-900 dark:text-amber-300 block text-xs">
-                  Select Your Reservation Category for Cutoff Evaluation:
-                </label>
-                <div className="grid grid-cols-5 gap-2">
-                  {(['UR', 'OBC', 'EWS', 'SC', 'ST'] as (keyof CategoryCutoffs)[]).map((cat) => (
-                    <button
-                      key={cat}
-                      type="button"
-                      onClick={() => setCandidateCategory(cat)}
-                      className={`p-2.5 rounded-xl border text-center font-bold text-xs transition-all cursor-pointer ${
-                        candidateCategory === cat
-                          ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-xs'
-                          : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600'
-                      }`}
-                    >
-                      <span>{cat}</span>
-                      <span className="block text-[10px] font-mono mt-0.5 opacity-80">
-                        {selectedTestForInstructions.categoryCutoffs?.[cat] || 10} M
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
 
               {/* Confirmation Checkbox */}
               <label className="flex items-start gap-3 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">

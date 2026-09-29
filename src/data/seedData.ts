@@ -1,4 +1,4 @@
-import { CurrentAffairsItem, Question, MockTest, UserProfile } from '../types';
+import { CurrentAffairsItem, Question, MockTest, UserProfile, TestAttempt } from '../types';
 import { ALL_NEW_MOCK_TESTS, ALL_NEW_QUESTIONS } from './allExamPapersData';
 
 export const DEFAULT_USER_PROFILE: UserProfile = {
@@ -33,14 +33,14 @@ export const SECONDARY_STUDENT_PROFILE: UserProfile = {
 
 export const ADMIN_USER_PROFILE: UserProfile = {
   id: 'faculty-admin-01',
-  name: 'Prof. Shraddha Parab',
-  rollNo: 'FACULTY-IT',
-  className: 'Dept. of IT',
+  name: 'Admin',
+  rollNo: 'ADMIN-01',
+  className: 'Administration',
   academicYear: '2026-27',
-  email: 'shraddha.parab@nirmala.edu.in',
+  email: 'admin@nirmala.edu.in',
   institute: 'Nirmala Memorial Foundation College of Commerce and Science (Autonomous)',
   targetExam: 'UPSC Civil Services',
-  avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+  avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80',
   role: 'admin',
   streakDays: 30,
   lastActiveDate: '2026-08-31'
@@ -1916,4 +1916,191 @@ const BASE_MOCK_TESTS: MockTest[] = [
 ];
 
 export const INITIAL_MOCK_TESTS: MockTest[] = [...BASE_MOCK_TESTS, ...ALL_NEW_MOCK_TESTS];
+
+export const SEED_TEST_ATTEMPTS: TestAttempt[] = [
+  {
+    id: 'attempt-upsc-01',
+    testId: 'mock-upsc-prelims-2026',
+    testTitle: 'UPSC Civil Services Prelims Mock Exam 2026 (GS Paper-1)',
+    examCategory: 'UPSC Civil Services',
+    testType: 'MockTest',
+    studentName: 'Shivraj Gond',
+    rollNo: '29',
+    timestamp: Date.now() - 86400000 * 2,
+    dateFormatted: '24 Aug 2026, 11:30 AM',
+    scoreMarks: 15.34,
+    maxMarks: 20.0,
+    totalQuestions: 10,
+    attemptedQuestions: 9,
+    correctAnswers: 8,
+    wrongAnswers: 1,
+    accuracyPercentage: 89,
+    totalTimeSeconds: 840,
+    selectedCategory: 'UR',
+    overallCutoffMarks: 12.0,
+    categoryCutoffsUsed: {
+      UR: 12.0,
+      OBC: 11.0,
+      EWS: 10.5,
+      SC: 9.0,
+      ST: 8.0
+    },
+    passedOverallCutoff: true,
+    passedCategoryCutoff: true,
+    sectionResults: [
+      {
+        section: 'General Studies',
+        totalQuestions: 4,
+        attempted: 4,
+        correct: 4,
+        wrong: 0,
+        scoreMarks: 8.0,
+        cutoffMarks: 4.0,
+        passedSectionCutoff: true,
+        accuracyPercentage: 100
+      },
+      {
+        section: 'Current Affairs & Polity',
+        totalQuestions: 4,
+        attempted: 3,
+        correct: 2,
+        wrong: 1,
+        scoreMarks: 3.34,
+        cutoffMarks: 3.0,
+        passedSectionCutoff: true,
+        accuracyPercentage: 67
+      },
+      {
+        section: 'General Science & Environment',
+        totalQuestions: 2,
+        attempted: 2,
+        correct: 2,
+        wrong: 0,
+        scoreMarks: 4.0,
+        cutoffMarks: 2.0,
+        passedSectionCutoff: true,
+        accuracyPercentage: 100
+      }
+    ],
+    userAnswers: {
+      'q-upsc-01': 'a',
+      'q-upsc-02': 'b',
+      'q-upsc-03': 'a',
+      'q-upsc-04': 'b',
+      'q-bank-02': 'a',
+      'q-rrb-01': 'a',
+      'q-rrb-02': 'a',
+      'q-rrb-03': 'c',
+      'q-ssc-01': 'b'
+    },
+    questionReviewStatus: {
+      'q-upsc-01': 'answered',
+      'q-upsc-02': 'answered',
+      'q-upsc-03': 'answered',
+      'q-upsc-04': 'answered',
+      'q-bank-02': 'answered',
+      'q-rrb-01': 'answered',
+      'q-rrb-02': 'answered',
+      'q-rrb-03': 'answered',
+      'q-ssc-01': 'answered'
+    }
+  },
+  {
+    id: 'attempt-ssc-02',
+    testId: 'mock-ssc-cgl-2026',
+    testTitle: 'SSC CGL Tier-1 All India Grand Mock Test 2026',
+    examCategory: 'SSC (CGL/CHSL/MTS)',
+    testType: 'MockTest',
+    studentName: 'Shivraj Gond',
+    rollNo: '29',
+    timestamp: Date.now() - 86400000 * 4,
+    dateFormatted: '22 Aug 2026, 04:15 PM',
+    scoreMarks: 14.5,
+    maxMarks: 20.0,
+    totalQuestions: 10,
+    attemptedQuestions: 8,
+    correctAnswers: 7,
+    wrongAnswers: 1,
+    accuracyPercentage: 88,
+    totalTimeSeconds: 690,
+    selectedCategory: 'UR',
+    overallCutoffMarks: 13.0,
+    categoryCutoffsUsed: {
+      UR: 13.0,
+      OBC: 12.0,
+      EWS: 11.5,
+      SC: 9.5,
+      ST: 8.5
+    },
+    passedOverallCutoff: true,
+    passedCategoryCutoff: true,
+    sectionResults: [
+      {
+        section: 'Quantitative Aptitude',
+        totalQuestions: 3,
+        attempted: 3,
+        correct: 3,
+        wrong: 0,
+        scoreMarks: 6.0,
+        cutoffMarks: 3.0,
+        passedSectionCutoff: true,
+        accuracyPercentage: 100
+      },
+      {
+        section: 'Reasoning & Logical Intelligence',
+        totalQuestions: 2,
+        attempted: 2,
+        correct: 2,
+        wrong: 0,
+        scoreMarks: 4.0,
+        cutoffMarks: 2.5,
+        passedSectionCutoff: true,
+        accuracyPercentage: 100
+      },
+      {
+        section: 'General Awareness',
+        totalQuestions: 3,
+        attempted: 2,
+        correct: 1,
+        wrong: 1,
+        scoreMarks: 1.5,
+        cutoffMarks: 2.0,
+        passedSectionCutoff: false,
+        accuracyPercentage: 50
+      },
+      {
+        section: 'English Comprehension',
+        totalQuestions: 2,
+        attempted: 1,
+        correct: 1,
+        wrong: 0,
+        scoreMarks: 2.0,
+        cutoffMarks: 2.0,
+        passedSectionCutoff: true,
+        accuracyPercentage: 100
+      }
+    ],
+    userAnswers: {
+      'q-ssc-01': 'a',
+      'q-ssc-02': 'b',
+      'q-rrb-04': 'a',
+      'q-ssc-03': 'a',
+      'q-ssc-04': 'a',
+      'q-ssc-05': 'c',
+      'q-bank-03': 'a',
+      'q-rrb-01': 'a'
+    },
+    questionReviewStatus: {
+      'q-ssc-01': 'answered',
+      'q-ssc-02': 'answered',
+      'q-rrb-04': 'answered',
+      'q-ssc-03': 'answered',
+      'q-ssc-04': 'answered',
+      'q-ssc-05': 'answered',
+      'q-bank-03': 'answered',
+      'q-rrb-01': 'answered'
+    }
+  }
+];
+
 
