@@ -22,7 +22,10 @@ import {
   X,
   Gauge,
   HelpCircle,
-  BarChart3
+  BarChart3,
+  Copy,
+  Check,
+  Key
 } from 'lucide-react';
 import { 
   BarChart, 
@@ -35,7 +38,7 @@ import {
   Cell
 } from 'recharts';
 import confetti from 'canvas-confetti';
-import { toggleQuestionBookmark, getQuestionBookmarks } from '../data/storage';
+import { toggleQuestionBookmark, getQuestionBookmarks, generateExamSessionId } from '../data/storage';
 
 interface ResultsAnalyticsViewProps {
   attempt: TestAttempt;
@@ -68,6 +71,15 @@ export const ResultsAnalyticsView: React.FC<ResultsAnalyticsViewProps> = ({
   const [expandedSolutions, setExpandedSolutions] = useState<Record<string, boolean>>({});
   const [bookmarkedQuestionIds, setBookmarkedQuestionIds] = useState<string[]>(getQuestionBookmarks());
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const [copiedSessionId, setCopiedSessionId] = useState<string | null>(null);
+
+  const handleCopySessionId = (sid: string) => {
+    if (navigator?.clipboard) {
+      navigator.clipboard.writeText(sid);
+      setCopiedSessionId(sid);
+      setTimeout(() => setCopiedSessionId(null), 2000);
+    }
+  };
 
   // Form state for adding custom test result
   const [selectedMockTestId, setSelectedMockTestId] = useState<string>(
@@ -191,6 +203,7 @@ export const ResultsAnalyticsView: React.FC<ResultsAnalyticsViewProps> = ({
 
     const newAttempt: TestAttempt = {
       id: `attempt-manual-${Date.now()}`,
+      sessionId: generateExamSessionId(chosenCategory),
       testId: matchedTest?.id || `test-${Date.now()}`,
       testTitle: chosenTitle,
       examCategory: chosenCategory,
@@ -349,8 +362,13 @@ export const ResultsAnalyticsView: React.FC<ResultsAnalyticsViewProps> = ({
                           {att.scoreMarks.toFixed(1)}/{att.maxMarks}
                         </span>
                       </div>
-                      <p className="text-[10px] text-slate-500 dark:text-slate-400">
-                        {att.dateFormatted.split(',')[0]} • {att.accuracyPercentage}% Acc
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5 flex-wrap">
+                        <span>{att.dateFormatted.split(',')[0]} • {att.accuracyPercentage}% Acc</span>
+                        {att.sessionId && (
+                          <span className="font-mono text-[9px] px-1 py-0.2 rounded bg-amber-100/70 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800 font-bold">
+                            {att.sessionId}
+                          </span>
+                        )}
                       </p>
                     </div>
                   </button>
@@ -373,11 +391,26 @@ export const ResultsAnalyticsView: React.FC<ResultsAnalyticsViewProps> = ({
           </div>
 
           <div className="space-y-1">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="px-2.5 py-0.5 rounded-full text-xs font-black uppercase bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
                 {attempt.examCategory}
               </span>
               <span className="text-xs text-slate-500 dark:text-slate-400">{attempt.dateFormatted}</span>
+              <span className="hidden sm:inline text-slate-300 dark:text-slate-700">•</span>
+              <button
+                type="button"
+                onClick={() => handleCopySessionId(attempt.sessionId || 'EXAM-SES-2026-9481A')}
+                className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700 text-[11px] font-mono text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400 transition-colors cursor-pointer"
+                title="Click to copy Exam Session ID"
+              >
+                <Key className="w-3 h-3 text-amber-600 dark:text-amber-400 shrink-0" />
+                <span>Session: {attempt.sessionId || 'EXAM-SES-2026-9481A'}</span>
+                {copiedSessionId === (attempt.sessionId || 'EXAM-SES-2026-9481A') ? (
+                  <Check className="w-3 h-3 text-emerald-600 shrink-0" />
+                ) : (
+                  <Copy className="w-3 h-3 text-slate-400 shrink-0" />
+                )}
+              </button>
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif tracking-tight">

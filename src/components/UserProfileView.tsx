@@ -15,7 +15,10 @@ import {
   ShieldCheck,
   FileText,
   HelpCircle,
-  TrendingUp
+  TrendingUp,
+  Copy,
+  Check,
+  Key
 } from 'lucide-react';
 import { saveUserProfile } from '../data/storage';
 import { Avatar } from './Avatar';
@@ -47,6 +50,16 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
   const [targetExam, setTargetExam] = useState<ExamCategory>(user.targetExam);
   const [avatar, setAvatar] = useState(user.avatar);
   const [savedMsg, setSavedMsg] = useState('');
+  const [copiedSession, setCopiedSession] = useState(false);
+
+  const handleCopySession = () => {
+    const sid = user.sessionId || 'SES-2026-NMF-8924A';
+    if (navigator?.clipboard) {
+      navigator.clipboard.writeText(sid);
+      setCopiedSession(true);
+      setTimeout(() => setCopiedSession(false), 2000);
+    }
+  };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,6 +120,16 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
               <span className="px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 rounded-lg text-xs font-bold flex items-center gap-1">
                 <Flame className="w-3.5 h-3.5 text-amber-500" /> {user.streakDays} Days Streak
               </span>
+              <button
+                type="button"
+                onClick={handleCopySession}
+                className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-amber-400 dark:hover:border-amber-600 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                title="Click to copy Session ID"
+              >
+                <Key className="w-3 h-3 text-amber-600 dark:text-amber-400 shrink-0" />
+                <span>Session: {user.sessionId || 'SES-2026-NMF-8924A'}</span>
+                {copiedSession ? <Check className="w-3 h-3 text-emerald-600 shrink-0" /> : <Copy className="w-3 h-3 text-slate-400 shrink-0" />}
+              </button>
             </div>
           </div>
         </div>

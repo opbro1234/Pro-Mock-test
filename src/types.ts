@@ -165,6 +165,7 @@ export interface SectionResult {
 
 export interface TestAttempt {
   id: string;
+  sessionId?: string; // Unique exam examination session token (e.g. EXAM-SES-2026-X821)
   testId: string;
   testTitle: string;
   examCategory: ExamCategory | string;
@@ -201,6 +202,7 @@ export interface TestAttempt {
 
 export interface UserProfile {
   id: string;
+  sessionId?: string; // Active student / portal session ID (e.g. SES-2026-NMF-8924A)
   name: string;
   rollNo: string;
   className: string;

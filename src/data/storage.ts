@@ -25,7 +25,38 @@ const STORAGE_KEYS = {
   USER_PROFILE: 'ce_user_profile_v6',
   CA_BOOKMARKS: 'ce_ca_bookmarks_v6',
   QUESTION_BOOKMARKS: 'ce_q_bookmarks_v6',
-  STUDENT_LIST: 'ce_students_list_v6'
+  STUDENT_LIST: 'ce_students_list_v6',
+  SESSION_ID: 'ce_portal_session_id_v6'
+};
+
+// --- Session ID Generators & Helpers ---
+
+export const getPortalSessionId = (): string => {
+  try {
+    let sid = localStorage.getItem(STORAGE_KEYS.SESSION_ID);
+    if (!sid) {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let rand = '';
+      for (let i = 0; i < 5; i++) {
+        rand += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      sid = `SES-2026-NMF-${rand}`;
+      localStorage.setItem(STORAGE_KEYS.SESSION_ID, sid);
+    }
+    return sid;
+  } catch (e) {
+    return 'SES-2026-NMF-8924A';
+  }
+};
+
+export const generateExamSessionId = (tag?: string): string => {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let rand = '';
+  for (let i = 0; i < 4; i++) {
+    rand += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  const num = Math.floor(1000 + Math.random() * 9000);
+  return `EXAM-SES-${num}-${rand}`;
 };
 
 // --- User Profile & Auth ---
@@ -34,11 +65,16 @@ export const getUserProfile = (): UserProfile => {
   try {
     const data = localStorage.getItem(STORAGE_KEYS.USER_PROFILE);
     if (!data) {
-      localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(DEFAULT_USER_PROFILE));
-      return DEFAULT_USER_PROFILE;
+      const defaultProf = { ...DEFAULT_USER_PROFILE, sessionId: getPortalSessionId() };
+      localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(defaultProf));
+      return defaultProf;
     }
     const parsed: UserProfile = JSON.parse(data);
     let modified = false;
+    if (!parsed.sessionId) {
+      parsed.sessionId = getPortalSessionId();
+      modified = true;
+    }
     if (parsed.avatar && parsed.avatar.includes('images.unsplash.com')) {
       parsed.avatar = '';
       modified = true;
@@ -54,7 +90,7 @@ export const getUserProfile = (): UserProfile => {
     }
     return parsed;
   } catch (e) {
-    return DEFAULT_USER_PROFILE;
+    return { ...DEFAULT_USER_PROFILE, sessionId: getPortalSessionId() };
   }
 };
 
@@ -71,6 +107,7 @@ export const switchStudentPersona = (persona: 'shivraj' | 'chris' | 'admin'): Us
   } else {
     profile = { ...ADMIN_USER_PROFILE, role: 'admin' };
   }
+  profile.sessionId = profile.sessionId || getPortalSessionId();
   saveUserProfile(profile);
   return profile;
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MockTest, ExamCategory, CategoryCutoffs } from '../types';
+import { MockTest, ExamCategory, CategoryCutoffs, UserProfile } from '../types';
 import { 
   Target, 
   Clock, 
@@ -17,22 +17,38 @@ import {
   X,
   Sliders,
   Sparkles,
-  Zap
+  Zap,
+  Key,
+  Copy,
+  Check
 } from 'lucide-react';
 
 interface MockTestPortalProps {
   mockTests: MockTest[];
+  user?: UserProfile;
   onStartTest: (test: MockTest, selectedCategory: keyof CategoryCutoffs) => void;
 }
 
 export const MockTestPortal: React.FC<MockTestPortalProps> = ({
   mockTests,
+  user,
   onStartTest
 }) => {
   const [selectedExamCategory, setSelectedExamCategory] = useState<string>('All');
   const [selectedTestForInstructions, setSelectedTestForInstructions] = useState<MockTest | null>(null);
   const [candidateCategory, setCandidateCategory] = useState<keyof CategoryCutoffs>('UR');
   const [instructionsAccepted, setInstructionsAccepted] = useState<boolean>(false);
+  const [copiedSession, setCopiedSession] = useState<boolean>(false);
+  
+  const handleCopySession = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    const sid = user?.sessionId || 'SES-2026-NMF-8924A';
+    if (navigator?.clipboard) {
+      navigator.clipboard.writeText(sid);
+      setCopiedSession(true);
+      setTimeout(() => setCopiedSession(false), 2000);
+    }
+  };
   
   // Custom Timer Preference for selected test
   const [selectedTimerMinutes, setSelectedTimerMinutes] = useState<number>(60);
@@ -97,8 +113,28 @@ export const MockTestPortal: React.FC<MockTestPortalProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center space-x-3 shrink-0 relative z-10">
-          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0 relative z-10">
+          {user && (
+            <button
+              type="button"
+              onClick={handleCopySession}
+              className="p-3 sm:p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 text-left hover:border-amber-400 transition-colors cursor-pointer"
+              title="Candidate Portal Session ID (Tap to Copy)"
+            >
+              <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                <Key className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+                <span>Candidate Session</span>
+              </div>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="text-xs sm:text-sm font-mono font-bold text-amber-900 dark:text-amber-300">
+                  {user.sessionId || 'SES-2026-NMF-8924A'}
+                </span>
+                {copiedSession ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
+              </div>
+            </button>
+          )}
+
+          <div className="p-3 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center">
             <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Available Tests</span>
             <span className="text-2xl font-black text-amber-800 dark:text-amber-400 font-mono">{mockTests.length} Papers</span>
           </div>
@@ -215,13 +251,32 @@ export const MockTestPortal: React.FC<MockTestPortalProps> = ({
 
             {/* Modal Body */}
             <div className="p-6 sm:p-8 space-y-6 text-xs text-slate-600 dark:text-slate-300">
-              <div className="space-y-1">
-                <span className="text-amber-800 dark:text-amber-400 font-extrabold uppercase tracking-wider text-[11px]">
-                  {selectedTestForInstructions.examCategory}
-                </span>
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <span className="text-amber-800 dark:text-amber-400 font-extrabold uppercase tracking-wider text-[11px]">
+                    {selectedTestForInstructions.examCategory}
+                  </span>
+                  {user && (
+                    <button
+                      type="button"
+                      onClick={handleCopySession}
+                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-[10px] font-mono font-bold text-amber-900 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/60 cursor-pointer shadow-2xs"
+                      title="Session ID attached to this exam (Click to copy)"
+                    >
+                      <Key className="w-2.5 h-2.5 text-amber-600 dark:text-amber-400" />
+                      <span>Session: {user.sessionId || 'SES-2026-NMF-8924A'}</span>
+                      {copiedSession ? <Check className="w-2.5 h-2.5 text-emerald-600" /> : <Copy className="w-2.5 h-2.5 text-slate-400" />}
+                    </button>
+                  )}
+                </div>
                 <h3 className="text-xl font-bold text-slate-900 dark:text-white font-serif">
                   {selectedTestForInstructions.title}
                 </h3>
+                {user && (
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                    Candidate: <strong className="text-slate-800 dark:text-slate-200">{user.name}</strong> • Roll #{user.rollNo} • Class: {user.className}
+                  </p>
+                )}
               </div>
 
               {/* Timer Configuration Section */}

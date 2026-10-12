@@ -76,7 +76,7 @@ export const ScorecardPrintModal: React.FC<ScorecardPrintModalProps> = ({
           </div>
 
           {/* Candidate & Exam Metadata Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-5 bg-slate-50 dark:bg-slate-800/60 print:bg-slate-50 border border-slate-200 dark:border-slate-700 print:border-slate-300 rounded-2xl text-xs">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 p-4 sm:p-5 bg-slate-50 dark:bg-slate-800/60 print:bg-slate-50 border border-slate-200 dark:border-slate-700 print:border-slate-300 rounded-2xl text-xs">
             <div className="space-y-1">
               <span className="text-slate-500 dark:text-slate-400 print:text-slate-500 flex items-center gap-1 font-semibold">
                 <User className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" /> Candidate Name
@@ -91,14 +91,21 @@ export const ScorecardPrintModal: React.FC<ScorecardPrintModalProps> = ({
 
             <div className="space-y-1">
               <span className="text-slate-500 dark:text-slate-400 print:text-slate-500 flex items-center gap-1 font-semibold">
-                <Calendar className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" /> Attempt Date & Time
+                <Calendar className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" /> Attempt Date
               </span>
-              <p className="font-bold text-slate-900 dark:text-white print:text-black">{attempt.dateFormatted}</p>
+              <p className="font-bold text-slate-900 dark:text-white print:text-black truncate">{attempt.dateFormatted}</p>
             </div>
 
             <div className="space-y-1">
-              <span className="text-slate-500 dark:text-slate-400 print:text-slate-500 font-semibold">Category Evaluated</span>
+              <span className="text-slate-500 dark:text-slate-400 print:text-slate-500 font-semibold">Category</span>
               <p className="font-bold text-amber-800 dark:text-amber-400 print:text-amber-800">{attempt.selectedCategory || 'UR'} Category</p>
+            </div>
+
+            <div className="space-y-1 col-span-2 sm:col-span-1">
+              <span className="text-slate-500 dark:text-slate-400 print:text-slate-500 font-semibold">Exam Session ID</span>
+              <p className="font-mono font-bold text-slate-800 dark:text-slate-200 print:text-black text-xs break-all">
+                {attempt.sessionId || 'EXAM-SES-2026-NMF-9281'}
+              </p>
             </div>
           </div>
 

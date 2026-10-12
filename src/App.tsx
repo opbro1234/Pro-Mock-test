@@ -161,7 +161,7 @@ export const App: React.FC = () => {
       />
 
       {/* Main Content View Switcher */}
-      <main className="flex-1 pb-16">
+      <main className="flex-1 pb-24 lg:pb-16">
         
         {activeTab === 'home' && (
           <HomeDashboard
@@ -187,6 +187,7 @@ export const App: React.FC = () => {
         {activeTab === 'mock' && (
           <MockTestPortal
             mockTests={mockTests}
+            user={user}
             onStartTest={handleStartTest}
           />
         )}
