@@ -94,8 +94,43 @@ export const getUserProfile = (): UserProfile => {
   }
 };
 
+// --- MongoDB Atlas Background Synchronization Helpers ---
+
+const safeApiCall = async (url: string, options?: RequestInit) => {
+  try {
+    const res = await fetch(url, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(options?.headers || {})
+      }
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    // Graceful fallback to offline/cached mode
+    return null;
+  }
+};
+
+export const fetchMongoDBStatus = async () => {
+  const data = await safeApiCall('/api/status');
+  return data?.database || {
+    database: 'MongoDB Atlas',
+    status: 'disconnected',
+    isConnected: false,
+    uriConfigured: false,
+    lastError: 'Local database cache active'
+  };
+};
+
 export const saveUserProfile = (profile: UserProfile): void => {
   localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(profile));
+  // Background sync to MongoDB Atlas
+  safeApiCall('/api/user-profile', {
+    method: 'POST',
+    body: JSON.stringify(profile)
+  });
 };
 
 export const switchStudentPersona = (persona: 'shivraj' | 'chris' | 'admin'): UserProfile => {
@@ -137,6 +172,13 @@ export const saveCustomQuestion = (newQ: Omit<Question, 'id'>): Question => {
   };
   const updated = [created, ...all];
   localStorage.setItem(STORAGE_KEYS.QUESTIONS, JSON.stringify(updated));
+
+  // Sync to MongoDB Atlas
+  safeApiCall('/api/questions', {
+    method: 'POST',
+    body: JSON.stringify(created)
+  });
+
   return created;
 };
 
@@ -146,12 +188,17 @@ export const updateQuestion = (updatedQ: Question): void => {
   if (idx >= 0) {
     all[idx] = updatedQ;
     localStorage.setItem(STORAGE_KEYS.QUESTIONS, JSON.stringify(all));
+    safeApiCall('/api/questions', {
+      method: 'POST',
+      body: JSON.stringify(updatedQ)
+    });
   }
 };
 
 export const deleteCustomQuestion = (id: string): void => {
   const all = getAllQuestions().filter(q => q.id !== id);
   localStorage.setItem(STORAGE_KEYS.QUESTIONS, JSON.stringify(all));
+  safeApiCall(`/api/questions/${id}`, { method: 'DELETE' });
 };
 
 // --- Current Affairs CRUD ---
@@ -177,6 +224,12 @@ export const saveCurrentAffairsPost = (post: Omit<CurrentAffairsItem, 'id'>): Cu
   };
   const updated = [created, ...all];
   localStorage.setItem(STORAGE_KEYS.CURRENT_AFFAIRS, JSON.stringify(updated));
+
+  safeApiCall('/api/current-affairs', {
+    method: 'POST',
+    body: JSON.stringify(created)
+  });
+
   return created;
 };
 
@@ -186,12 +239,17 @@ export const updateCurrentAffairsPost = (updatedPost: CurrentAffairsItem): void 
   if (idx >= 0) {
     all[idx] = updatedPost;
     localStorage.setItem(STORAGE_KEYS.CURRENT_AFFAIRS, JSON.stringify(all));
+    safeApiCall('/api/current-affairs', {
+      method: 'POST',
+      body: JSON.stringify(updatedPost)
+    });
   }
 };
 
 export const deleteCurrentAffairsPost = (id: string): void => {
   const all = getAllCurrentAffairs().filter(p => p.id !== id);
   localStorage.setItem(STORAGE_KEYS.CURRENT_AFFAIRS, JSON.stringify(all));
+  safeApiCall(`/api/current-affairs/${id}`, { method: 'DELETE' });
 };
 
 // --- Current Affairs & Question Bookmarks ---
@@ -263,11 +321,17 @@ export const saveMockTest = (test: MockTest): void => {
     all.unshift(test);
   }
   localStorage.setItem(STORAGE_KEYS.MOCK_TESTS, JSON.stringify(all));
+
+  safeApiCall('/api/mock-tests', {
+    method: 'POST',
+    body: JSON.stringify(test)
+  });
 };
 
 export const deleteMockTest = (id: string): void => {
   const all = getMockTests().filter(t => t.id !== id);
   localStorage.setItem(STORAGE_KEYS.MOCK_TESTS, JSON.stringify(all));
+  safeApiCall(`/api/mock-tests/${id}`, { method: 'DELETE' });
 };
 
 // --- Test Attempts & Performance ---
@@ -301,6 +365,12 @@ export const saveTestAttempt = (attempt: TestAttempt): void => {
   };
   attempts.unshift(enhancedAttempt); // latest first
   localStorage.setItem(STORAGE_KEYS.ATTEMPTS, JSON.stringify(attempts));
+
+  // Sync attempt to MongoDB Atlas
+  safeApiCall('/api/test-attempts', {
+    method: 'POST',
+    body: JSON.stringify(enhancedAttempt)
+  });
 };
 
 export const getUserStats = (): UserStats => {
